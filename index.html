@@ -1,30 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VanillaType X</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <header>
-        <h1>Typing Test</h1>
-        <label for="mode">Select Mode:</label>
-        <select id="mode">
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
-    </header>
 
-    <main>
-        <p id="word-display"></p>
-        <input type="text" id="input-field" autofocus>
-        <p id="results">Results : </p>
-    </main>
+<div class="background-grid"></div>
+<div class="scanline"></div>
+<div class="glow glow1"></div>
+<div class="glow glow2"></div>
+<div class="glow glow3"></div>
 
-    <script src="script.js"></script>
+<!-- Leaderboard Modal -->
+<div id="leaderboard-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>⭐ LEADERBOARD</h2>
+      <button id="close-modal-btn">✕</button>
+    </div>
+    <div id="leaderboard-list">
+      <p class="empty-lb">No scores yet. Be the first!</p>
+    </div>
+  </div>
+</div>
+
+<main class="main-container">
+
+  <!-- HOME SCREEN -->
+  <section class="hero" id="home-screen">
+
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <h2>VANILLATYPE</h2>
+      </div>
+      <div class="nav-right">
+        <button class="leaderboard-btn" id="leaderboard-btn">⭐ Leaderboard</button>
+
+      </div>
+    </nav>
+
+    <div class="hero-content">
+
+      <div class="hero-left">
+        <div class="mini-badge">WELCOME TO</div>
+        <h1>VANILLA<span>TYPE</span></h1>
+        <p>Test your speed. Improve your skills. Beat your best.</p>
+        <div class="hero-tags">
+          <div>⚡ Fast</div>
+          <div>🎯 Accurate</div>
+          <div>🧠 Improve</div>
+        </div>
+        <div class="name-input-row">
+          <input type="text" id="player-name" placeholder="Enter your name..." maxlength="20" autocomplete="off">
+        </div>
+        <button id="start-game-btn" class="start-btn">▶ START GAME</button>
+      </div>
+
+      <div class="hero-right">
+        <div class="settings-card">
+          <h3>⚙ GAME SETTINGS</h3>
+          <div class="setting">
+            <div><h4>🌐 LANGUAGE</h4><p>Choose your language</p></div>
+            <select id="language-select">
+              <option value="english">English</option>
+              <option value="french">French</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div><h4>📊 DIFFICULTY</h4><p>Select difficulty level</p></div>
+            <select id="mode">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div><h4>📝 WORDS COUNT</h4><p>Number of words</p></div>
+            <select id="word-count">
+              <option value="10">10 Words</option>
+              <option value="20">20 Words</option>
+              <option value="30">30 Words</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div><h4>⏰ TIMER</h4><p>Time limit</p></div>
+            <select id="timer-select">
+              <option value="30">30 Seconds</option>
+              <option value="60">60 Seconds</option>
+              <option value="90">90 Seconds</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="stats-row">
+      <div class="stats-box">
+        <h2 id="total-players-display">0</h2>
+        <span>Players</span>
+      </div>
+      <div class="stats-box">
+        <h2 id="best-wpm-display">0</h2>
+        <span>Best WPM</span>
+      </div>
+      <div class="stats-box">
+        <h2>24/7</h2>
+        <span>Training</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section class="game-section hidden" id="game-screen">
+
+    <div class="game-top">
+      <div class="game-logo">⚡ VANILLATYPE</div>
+      <div class="top-center">
+        <div class="combo-display" id="combo-display"></div>
+      </div>
+      <div class="top-actions">
+        <button id="restart-btn">↻ Restart</button>
+        <button id="home-btn">⌂ Home</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="card">
+        <span>WPM</span>
+        <h2 id="wpm">0</h2>
+      </div>
+      <div class="card">
+        <span>ACCURACY</span>
+        <h2 id="accuracy">100%</h2>
+      </div>
+      <div class="card">
+        <span>TIMER</span>
+        <h2 id="timer">60s</h2>
+      </div>
+      <div class="card">
+        <span>STREAK 🔥</span>
+        <h2 id="streak">0</h2>
+      </div>
+    </div>
+
+    <div class="progress-wrapper">
+      <div id="progress-bar"></div>
+    </div>
+
+    <div class="typing-container">
+      <div id="word-display"></div>
+      <input
+        type="text"
+        id="input-field"
+        placeholder="Start typing..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <div class="space-info">Press <kbd>SPACE</kbd> to validate · <kbd>ESC</kbd> to restart</div>
+    </div>
+
+    <!-- WPM Chart -->
+    <div class="chart-wrapper">
+      <div class="chart-title">📈 WPM Over Time</div>
+      <canvas id="wpm-chart" height="100"></canvas>
+    </div>
+
+    <div id="results"></div>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
 </body>
-
 </html>
